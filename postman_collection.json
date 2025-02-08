@@ -41,7 +41,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/products?page=1&limit=10&search=test",
+							"raw": "localhost:3000/api/products?page=1&limit=10&search=&category=",
 							"host": [
 								"localhost"
 							],
@@ -61,7 +61,11 @@
 								},
 								{
 									"key": "search",
-									"value": "test"
+									"value": ""
+								},
+								{
+									"key": "category",
+									"value": ""
 								}
 							]
 						}
@@ -78,7 +82,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Test Adding Product\",\n    \"description\": \"Test Adding Product Description\",\n    \"price\": 10\n}",
+							"raw": "{\n    \"name\": \"Test Adding Product\",\n    \"description\": \"Test Adding Product Description\",\n    \"price\": 10,\n    \"category\": \"TOYS\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -109,7 +113,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Test Adding Product\",\n    \"description\": \"Test Adding Product Description\",\n    \"price\": 10\n}",
+							"raw": "{\n    \"name\": \"Test Adding Product\",\n    \"description\": \"Test Adding Product Description\",\n    \"price\": 10,\n    \"category\": \"ELECTRONICS\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -168,7 +172,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/orders/1a7f7d18-6892-48d3-94c4-4b8a1ec0fdae",
+							"raw": "localhost:3000/api/orders/64fddc4f-1331-4ea0-b5b4-0c65d8fec0d3",
 							"host": [
 								"localhost"
 							],
@@ -176,7 +180,7 @@
 							"path": [
 								"api",
 								"orders",
-								"1a7f7d18-6892-48d3-94c4-4b8a1ec0fdae"
+								"64fddc4f-1331-4ea0-b5b4-0c65d8fec0d3"
 							]
 						}
 					},
@@ -191,7 +195,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/orders?page=1&limit=10&search=test&fromOrderDate=2021&toOrderDate=2025",
+							"raw": "localhost:3000/api/orders?page=1&limit=10&search=&fromOrderDate=2021&toOrderDate=2026",
 							"host": [
 								"localhost"
 							],
@@ -211,7 +215,7 @@
 								},
 								{
 									"key": "search",
-									"value": "test"
+									"value": ""
 								},
 								{
 									"key": "fromOrderDate",
@@ -219,7 +223,7 @@
 								},
 								{
 									"key": "toOrderDate",
-									"value": "2025"
+									"value": "2026"
 								}
 							]
 						}
@@ -236,7 +240,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"customerName\": \"Ahmed Zatar\",\n    \"email\": \"ahmed.zatar97@gmail.com\",\n    \"mobileNumber\": \"+962792268210\",\n    \"products\": [\n        {\n            \"id\": 1,\n            \"quantity\": 2\n        },\n        {\n            \"id\": 2,\n            \"quantity\": 3\n        }\n    ]\n}",
+							"raw": "{\n    \"customerName\": \"Ahmed Zatar\",\n    \"email\": \"ahmed.zatar97@gmail.com\",\n    \"mobileNumber\": \"+962792268210\",\n    \"address\": \"Amman, Jordan\",\n    \"products\": [\n        {\n            \"id\": 1,\n            \"quantity\": 2\n        },\n        {\n            \"id\": 2,\n            \"quantity\": 3\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -267,7 +271,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"customerName\": \"Ahmed Zatar\",\n    \"email\": \"ahmed.zatar97@gmail.com\",\n    \"mobileNumber\": \"+962792268210\",\n    \"status\": \"DELIVERED\"\n}",
+							"raw": "{\n    \"customerName\": \"Ahmed Zatar\",\n    \"email\": \"ahmed.zatar97@gmail.com\",\n    \"mobileNumber\": \"+962792268210\",\n    \"address\": \"Amman, Jordan\",\n    \"status\": \"CONFIRMED\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -275,7 +279,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/orders/1a7f7d18-6892-48d3-94c4-4b8a1ec0fdae",
+							"raw": "localhost:3000/api/orders/f4738753-879f-484b-99e5-df85bd93acf6",
 							"host": [
 								"localhost"
 							],
@@ -283,7 +287,7 @@
 							"path": [
 								"api",
 								"orders",
-								"1a7f7d18-6892-48d3-94c4-4b8a1ec0fdae"
+								"f4738753-879f-484b-99e5-df85bd93acf6"
 							]
 						}
 					},
@@ -298,7 +302,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/orders/1a7f7d18-6892-48d3-94c4-4b8a1ec0fdae",
+							"raw": "localhost:3000/api/orders/f07b7ac5-027c-4991-bcf4-c8105cfc62a2",
 							"host": [
 								"localhost"
 							],
@@ -306,32 +310,7 @@
 							"path": [
 								"api",
 								"orders",
-								"1a7f7d18-6892-48d3-94c4-4b8a1ec0fdae"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove order product",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "localhost:3000/api/orders/1a7f7d18-6892-48d3-94c4-4b8a1ec0fdae/product/1",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"orders",
-								"1a7f7d18-6892-48d3-94c4-4b8a1ec0fdae",
-								"product",
-								"1"
+								"f07b7ac5-027c-4991-bcf4-c8105cfc62a2"
 							]
 						}
 					},

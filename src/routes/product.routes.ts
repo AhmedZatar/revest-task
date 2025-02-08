@@ -1,44 +1,36 @@
 import {Router} from "express";
+
 import {schemaValidator} from "../middlewares";
 import {productSchema} from "./schemas";
+import {productController} from "../controllers";
 
 const router = Router();
 
 router.get(
   "/:id",
   schemaValidator(productSchema.getProductById, "params"),
-  (req, res) => {
-    res.send("Product by ID");
-  },
+  productController.getById,
 );
 router.get(
   "/",
   schemaValidator(productSchema.getProductsList, "query"),
-  (req, res) => {
-    res.send("List of products");
-  },
+  productController.getList,
 );
 router.post(
   "/",
   schemaValidator(productSchema.createProduct, "body"),
-  (req, res) => {
-    res.send("Create product");
-  },
+  productController.create,
 );
 router.put(
   "/:id",
   schemaValidator(productSchema.updateProduct.params, "params"),
   schemaValidator(productSchema.updateProduct.body, "body"),
-  (req, res) => {
-    res.send("Update product");
-  },
+  productController.update,
 );
 router.delete(
   "/:id",
   schemaValidator(productSchema.deleteProduct, "params"),
-  (req, res) => {
-    res.send("Delete product");
-  },
+  productController.delete,
 );
 
 export default router;

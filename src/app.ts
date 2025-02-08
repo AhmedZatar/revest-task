@@ -5,12 +5,7 @@ import compression from "compression";
 import morgan from "morgan";
 
 import config from "./config";
-import {
-  limiter,
-  uniqueRequestId,
-  errorHandler,
-  notFoundHandler,
-} from "./middlewares";
+import {limiter, errorHandler, notFoundHandler} from "./middlewares";
 import routes from "./routes";
 import {prisma} from "./utils";
 
@@ -19,7 +14,6 @@ app.use(cors());
 app.use(helmet());
 app.use(compression());
 app.use(limiter);
-app.use(uniqueRequestId);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

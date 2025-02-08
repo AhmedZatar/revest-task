@@ -1,4 +1,5 @@
 import Joi from "joi";
+import {OrderStatus} from "@prisma/client";
 
 const uuidSchema = Joi.string().guid({version: "uuidv4"}).required().messages({
   "string.guid": "Invalid UUID format",
@@ -12,14 +13,19 @@ export default {
   getOrdersList: Joi.object({
     page: Joi.number().integer().min(1).optional(),
     limit: Joi.number().integer().min(1).max(100).optional(),
-    search: Joi.string().optional(),
+    search: Joi.string().optional().empty(""),
     fromOrderDate: Joi.date().iso().optional(),
     toOrderDate: Joi.date().iso().optional(),
+    status: Joi.string()
+      .valid(...Object.values(OrderStatus))
+      .optional()
+      .empty(""),
   }),
   createOrder: Joi.object({
     customerName: Joi.string().min(3).required(),
     email: Joi.string().email().required(),
-    mobileNumber: Joi.string().min(10).required(),
+    mobileNumber: Joi.string().min(10).max(14).required(),
+    address: Joi.string().min(5).required(),
     products: Joi.array()
       .items(
         Joi.object({
@@ -38,25 +44,13 @@ export default {
       customerName: Joi.string().min(3).optional(),
       email: Joi.string().email().optional(),
       mobileNumber: Joi.string().min(10).optional(),
+      address: Joi.string().min(5).optional(),
       status: Joi.string()
-        .valid("PENDING", "CONFIRMED", "CANCELLED", "DELIVERED")
+        .valid(...Object.values(OrderStatus))
         .optional(),
     }),
   },
   deleteOrder: Joi.object({
     id: uuidSchema,
   }),
-  removeOrderProduct: Joi.object({
-    orderId: uuidSchema,
-    productId: Joi.number().integer().required(),
-  }),
-  updateOrderProductQuantity: {
-    params: Joi.object({
-      orderId: uuidSchema,
-      productId: Joi.number().integer().required(),
-    }),
-    body: Joi.object({
-      quantity: Joi.number().integer().positive().required(),
-    }),
-  },
 };
