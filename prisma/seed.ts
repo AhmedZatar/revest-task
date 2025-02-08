@@ -1,4 +1,4 @@
-import {PrismaClient, OrderStatus} from "@prisma/client";
+import {PrismaClient, OrderStatus, ProductCategory} from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -64,6 +64,7 @@ async function main() {
       name: "Book A",
       description: "Book A description",
       price: 250.0,
+      category: ProductCategory.BOOKS,
     },
   });
 
@@ -74,6 +75,7 @@ async function main() {
       name: "Book B",
       description: "Book B description",
       price: 1200.0,
+      category: ProductCategory.BOOKS,
     },
   });
 
@@ -82,7 +84,8 @@ async function main() {
       customerName: generateRandomName(),
       email: generateRandomEmail(),
       mobileNumber: generateRandomPhoneNumber(),
-      status: "CONFIRMED",
+      status: generateRandomStatus(),
+      address: "Amman, Jordan",
       products: {
         create: [
           {

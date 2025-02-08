@@ -1,59 +1,36 @@
 import {Router} from "express";
+
 import {schemaValidator} from "../middlewares";
 import {orderSchema} from "./schemas";
+import {orderController} from "../controllers";
 
 const router = Router();
 
 router.get(
   "/:id",
   schemaValidator(orderSchema.getOrderById, "params"),
-  (req, res) => {
-    res.send("Order by ID");
-  },
+  orderController.getById,
 );
 router.get(
   "/",
   schemaValidator(orderSchema.getOrdersList, "query"),
-  (req, res) => {
-    res.send("Orders list");
-  },
+  orderController.getList,
 );
 router.post(
   "/",
   schemaValidator(orderSchema.createOrder, "body"),
-  (req, res) => {
-    res.send("Create order");
-  },
+  orderController.create,
 );
 router.put(
   "/:id",
   schemaValidator(orderSchema.updateOrder.params, "params"),
   schemaValidator(orderSchema.updateOrder.body, "body"),
-  (req, res) => {
-    res.send("Update order");
-  },
+  orderController.update,
 );
 router.delete(
   "/:id",
   schemaValidator(orderSchema.deleteOrder, "params"),
-  (req, res) => {
-    res.send("Delete order");
-  },
-);
-router.delete(
-  "/:orderId/product/:productId",
-  schemaValidator(orderSchema.removeOrderProduct, "params"),
-  (req, res) => {
-    res.send("Remove order product");
-  },
-);
-router.patch(
-  "/:orderId/product/:productId",
-  schemaValidator(orderSchema.updateOrderProductQuantity.params, "params"),
-  schemaValidator(orderSchema.updateOrderProductQuantity.body, "body"),
-  (req, res) => {
-    res.send("Update order product quantity");
-  },
+  orderController.delete,
 );
 
 export default router;

@@ -14,18 +14,31 @@ enum OrderStatus {
     DELIVERED
 }
 
+enum ProductCategory {
+    ELECTRONICS
+    FASHION
+    HOME
+    BEAUTY
+    SPORTS
+    TOYS
+    BOOKS
+    AUTOMOTIVE
+}
+
 model Product {
-    id          Int       @id @default(autoincrement())
+    id          Int             @id @default(autoincrement())
     name        String
     description String?
     price       Float
-    createdAt   DateTime  @default(now()) @map("created_at")
-    updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
-    deletedAt   DateTime? @map("deleted_at")
+    category    ProductCategory
+    createdAt   DateTime        @default(now()) @map("created_at")
+    updatedAt   DateTime        @default(now()) @updatedAt @map("updated_at")
+    deletedAt   DateTime?       @map("deleted_at")
 
     orders ProductsOnOrders[]
 
     @@index([name])
+    @@index([category])
     @@map("products")
 }
 
@@ -35,6 +48,7 @@ model Order {
     email        String
     mobileNumber String      @map("mobile_number")
     status       OrderStatus @default(PENDING)
+    address      String
     createdAt    DateTime    @default(now()) @map("created_at")
     updatedAt    DateTime    @default(now()) @updatedAt @map("updated_at")
 
@@ -44,6 +58,7 @@ model Order {
     @@index([email])
     @@index([mobileNumber])
     @@index([status])
+    @@index([address])
     @@index([createdAt])
     @@map("orders")
 }
