@@ -23,14 +23,14 @@ export default {
     products: Joi.array()
       .items(
         Joi.object({
-          productId: Joi.number().integer().required(),
+          id: Joi.number().integer().required(),
           quantity: Joi.number().integer().positive().required(),
         }),
       )
       .min(1)
       .required(),
   }),
-  updateOrder: Joi.object({
+  updateOrder: {
     params: Joi.object({
       id: uuidSchema,
     }),
@@ -42,12 +42,15 @@ export default {
         .valid("PENDING", "CONFIRMED", "CANCELLED", "DELIVERED")
         .optional(),
     }),
+  },
+  deleteOrder: Joi.object({
+    id: uuidSchema,
   }),
   removeOrderProduct: Joi.object({
     orderId: uuidSchema,
     productId: Joi.number().integer().required(),
   }),
-  updateOrderProductQuantity: Joi.object({
+  updateOrderProductQuantity: {
     params: Joi.object({
       orderId: uuidSchema,
       productId: Joi.number().integer().required(),
@@ -55,5 +58,5 @@ export default {
     body: Joi.object({
       quantity: Joi.number().integer().positive().required(),
     }),
-  }),
+  },
 };
