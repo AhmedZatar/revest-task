@@ -1,7 +1,8 @@
 import {OrderStatus} from "@prisma/client";
 
-import {prisma} from "../utils";
+import {prisma, sendSalesOrder} from "../utils";
 import productService from "./product.service";
+import {OrderWithProducts} from "../types";
 
 interface CreateOrderDTO {
   customerName: string;
@@ -35,7 +36,7 @@ export default {
     },
   },
 
-  async getById(id: string) {
+  async getById(id: string): Promise<OrderWithProducts | null> {
     return prisma.order
       .findUnique({
         where: {id},
@@ -50,7 +51,12 @@ export default {
             0,
           ),
           products: order.products.map((p) => ({
-            ...p.product,
+            product: {
+              name: p.product.name,
+              price: p.product.price,
+              description: p.product.description,
+              category: p.product.category,
+            },
             quantity: p.quantity,
             totalPrice: p.product.price * p.quantity,
           })),
@@ -115,7 +121,7 @@ export default {
       );
   },
 
-  async create(data: CreateOrderDTO) {
+  async create(data: CreateOrderDTO): Promise<OrderWithProducts | null> {
     const productIds = data.products.map((p) => p.id);
 
     const existingProductIds = await productService.getExistingProductIds(
@@ -145,10 +151,17 @@ export default {
       },
     });
 
-    return this.getById(createdOrder.id);
+    const orderData = await this.getById(createdOrder.id);
+
+    sendSalesOrder(orderData);
+
+    return orderData;
   },
 
-  async update(id: string, data: UpdateOrderDTO) {
+  async update(
+    id: string,
+    data: UpdateOrderDTO,
+  ): Promise<OrderWithProducts | null> {
     const existingOrder = await prisma.order.findUnique({where: {id}});
 
     if (!existingOrder) {
@@ -163,7 +176,7 @@ export default {
     return this.getById(id);
   },
 
-  async delete(id: string) {
+  async delete(id: string): Promise<{message: string}> {
     const existingOrder = await prisma.order.findUnique({where: {id}});
 
     if (!existingOrder) {
