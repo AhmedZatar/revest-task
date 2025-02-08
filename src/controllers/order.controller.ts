@@ -58,8 +58,11 @@ export default {
     try {
       const order = await orderService.create(req.body);
       responseHandler.success(res, order, "Order created", 201);
-    } catch (error: any) {
-      if (error.message.includes("Products not found")) {
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        error.message.includes("Products not found")
+      ) {
         responseHandler.badRequest(res, error.message);
         return;
       }
@@ -72,22 +75,22 @@ export default {
       const {id} = req.params;
       const updatedOrder = await orderService.update(id, req.body);
       responseHandler.success(res, updatedOrder, "Order updated successfully");
-    } catch (error: any) {
-      if (error.message.includes("Order not found")) {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message.includes("Order not found")) {
         responseHandler.notFound(res, error.message);
         return;
       }
       next(error);
     }
   },
-  
+
   async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id } = req.params;
+      const {id} = req.params;
       await orderService.delete(id);
       responseHandler.success(res, null, "Order deleted successfully");
-    } catch (error: any) {
-      if (error.message.includes("Order not found")) {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message.includes("Order not found")) {
         responseHandler.notFound(res, error.message);
         return;
       }

@@ -66,23 +66,29 @@ export default {
 
       const updatedProduct = await productService.update(Number(id), req.body);
       responseHandler.success(res, updatedProduct, "Product updated");
-    } catch (error: any) {
-      if (error.message.includes("Product not found")) {
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        error.message.includes("Product not found")
+      ) {
         responseHandler.notFound(res, error.message);
         return;
       }
       next(error);
     }
   },
-  
+
   async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const {id} = req.params;
 
       await productService.delete(Number(id));
       responseHandler.success(res, null, "Product deleted");
-    } catch (error: any) {
-      if (error.message.includes("Product not found")) {
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        error.message.includes("Product not found")
+      ) {
         responseHandler.notFound(res, error.message);
         return;
       }
