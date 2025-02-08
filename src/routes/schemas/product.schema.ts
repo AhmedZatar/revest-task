@@ -18,7 +18,7 @@ export default {
     description: Joi.string().optional(),
     price: Joi.number().positive().required(),
   }),
-  updateProduct: Joi.object({
+  updateProduct: {
     params: Joi.object({
       id: Joi.number().integer().required(),
     }),
@@ -27,7 +27,7 @@ export default {
       description: Joi.string().optional(),
       price: Joi.number().positive().optional(),
     }),
-  }),
+  },
   deleteProduct: Joi.object({
     id: Joi.number().integer().required(),
   }),

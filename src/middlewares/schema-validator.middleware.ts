@@ -1,15 +1,15 @@
 import {Request, Response, NextFunction} from "express";
 import Joi from "joi";
 
-export const validate = (schema: Joi.ObjectSchema) => {
+export const validate = (
+  schema: Joi.ObjectSchema,
+  source: "body" | "query" | "params" = "body",
+) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const {error} = schema.validate(
-      {body: req.body, query: req.query, params: req.params},
-      {abortEarly: false},
-    );
+    const {error} = schema.validate(req[source], {abortEarly: false});
 
     if (error) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: "Validation Error",
         errors: error.details.map((err) => ({
@@ -17,8 +17,12 @@ export const validate = (schema: Joi.ObjectSchema) => {
           message: err.message,
         })),
       });
+
+      return;
     }
 
     next();
   };
 };
+
+export default validate;
