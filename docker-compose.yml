@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: revest-app
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/revest?schema=public
+      - THIRD_PARTY_API_URL=https://third-party-api.com
+      - THIRD_PARTY_API_TOKEN=${THIRD_PARTY_API_TOKEN}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - revest-network
+    command: >
+      sh -c "npx prisma db push --skip-generate --accept-data-loss &&
+        npx prisma db seed || echo '⚠️ Seeding failed, continuing...' &&
+        npm start"
+
+  db:
+    image: postgres:15
+    container_name: revest-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: revest
+    ports:
+      - "5432:5431"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - revest-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  postgres-data:
+
+networks:
+  revest-network:
